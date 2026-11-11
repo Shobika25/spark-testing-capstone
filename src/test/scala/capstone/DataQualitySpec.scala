@@ -1,4 +1,3 @@
-
 package capstone
 
 import org.scalatest.funsuite.AnyFunSuite
@@ -18,10 +17,12 @@ class DataQualitySpec extends AnyFunSuite with SparkTestSession {
   test("detects null values") {
 
     // Explicit schema prevents Spark from inferring null as Any
-    val schema = StructType(Seq(
-      StructField("name", StringType, nullable = true),
-      StructField("age", IntegerType, nullable = true)
-    ))
+    val schema = StructType(
+      Seq(
+        StructField("name", StringType, nullable = true),
+        StructField("age", IntegerType, nullable = true)
+      )
+    )
 
     val data = Seq(
       Row("Rajesh", 35),

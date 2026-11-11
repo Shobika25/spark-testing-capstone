@@ -1,0 +1,50 @@
+
+name: Scala Spark CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: sbt
+
+      - name: Set up sbt
+        uses: sbt/setup-sbt@v1
+
+      - name: Check Scala formatting
+        run: sbt scalafmtCheckAll
+
+      - name: Run Scalafix
+        run: sbt scalafixAll
+
+      - name: Check for formatting or lint changes
+        run: git diff --exit-code
+
+      - name: Run tests
+        run: sbt test
+
+      - name: Build assembly JAR
+        run: sbt assembly
+
+      - name: Upload assembly JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: spark-testing-capstone-jar
+          path: target/scala-2.12/*assembly*.jar
+          if-no-files-found: error
