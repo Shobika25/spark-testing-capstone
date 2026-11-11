@@ -1,4 +1,3 @@
-
 package capstone
 
 import org.apache.spark.sql.SparkSession
@@ -9,7 +8,8 @@ trait SparkTestSession extends BeforeAndAfterAll {
   this: Suite =>
 
   protected lazy val spark: SparkSession =
-    SparkSession.builder()
+    SparkSession
+      .builder()
       .appName("SparkTestingCapstone")
       .master("local[2]")
       .config("spark.ui.enabled", "false")

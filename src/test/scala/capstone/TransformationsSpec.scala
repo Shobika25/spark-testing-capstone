@@ -5,7 +5,8 @@ import org.apache.spark.sql.SparkSession
 
 class TransformationsSpec extends AnyFunSuite {
 
-  private val spark = SparkSession.builder()
+  private val spark = SparkSession
+    .builder()
     .appName("TransformationsSpec")
     .master("local[2]")
     .config("spark.ui.enabled", "false")

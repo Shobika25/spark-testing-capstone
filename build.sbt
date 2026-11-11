@@ -1,3 +1,7 @@
+
+import sbtassembly.AssemblyPlugin.autoImport._
+import sbtassembly.MergeStrategy
+
 ThisBuild / scalaVersion := "2.12.18"
 
 lazy val root = (project in file("."))
@@ -15,5 +19,19 @@ lazy val root = (project in file("."))
       "--add-exports=java.base/sun.nio.ch=ALL-UNNAMED"
     ),
 
-    Test / parallelExecution := false
+    Test / parallelExecution := false,
+
+    assembly / assemblyMergeStrategy := {
+      case PathList("META-INF", "versions", _ @ _*) =>
+        MergeStrategy.discard
+
+      case PathList("META-INF", _ @ _*) =>
+        MergeStrategy.discard
+
+      case "reference.conf" =>
+        MergeStrategy.concat
+
+      case _ =>
+        MergeStrategy.first
+    }
   )
